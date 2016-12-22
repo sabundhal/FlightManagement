@@ -1,5 +1,5 @@
 // public/js/app.js
-angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl'])
+angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'rzModule'])
 
     .filter('priceFilter', function () {
 
@@ -23,10 +23,20 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl'])
     .filter('durationFilter', function () {
 
         return function (input, duration) {
-            // console.log(duration);
+            console.log(duration);
+
+            // if (duration.min == null)
+            //     return input;
+
+            //
+            // console.log(duration.title);
+            if (duration == null)
+                return input;
+            var duration = JSON.parse(duration);
             if (duration.min == null)
                 return input;
-            // var duration = JSON.parse(duration);
+            console.log(duration.min);
+
             var min = parseInt(duration.min) * 60;
             var max = parseInt(duration.max) * 60;
             var output = [];
@@ -57,14 +67,14 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl'])
     .filter('departureFilter', function () {
 
         return function (input, departure) {
+            // var departure = JSON.parse(departure);
+            if (departure == null)
+                return input;
+            var departure = JSON.parse(departure);
             if (departure.min == null)
                 return input;
 
             var output = [];
-
-            // var departure = JSON.parse(departure);
-            if (departure.min == null)
-                return input;
 
             var timeUnit = departure.min.substring(departure.min.length - 2, departure.min.length);
             var minTime = departure.min.substring(0, departure.min.indexOf(":"));
@@ -94,13 +104,16 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl'])
     .filter('arrivalFilter', function () {
 
         return function (input, arrival) {
+            // var arrival = JSON.parse(arrival);
+
+            if (arrival == null)
+                return input;
+            var arrival = JSON.parse(arrival);
             if (arrival.min == null)
                 return input;
 
             var output = [];
-            // var arrival = JSON.parse(arrival);
-            if (arrival.min == null)
-                return input;
+
             var timeUnit = arrival.min.substring(arrival.min.length - 2, arrival.min.length);
             var minTime = arrival.min.substring(0, arrival.min.indexOf(":"));
             var maxTime = arrival.max.substring(0, arrival.max.indexOf(":"));

@@ -26,7 +26,7 @@ angular.module('MainCtrl', [])
         vm.allFlights = [];
         vm.sortType = "Price";
         vm.sortReverse = false;
-        vm.slider = null;
+        // vm.slider = null;
         var minPrice = 0, maxPrice = 0;
         vm.durations = [
             {title: "All",min:null,max:null},
@@ -34,10 +34,10 @@ angular.module('MainCtrl', [])
             {title: " 2hrs to <3 Hours", min: "2", max: "3"},
             {title: ">= 3 hrs", min: "3", max: "6"}
         ];
-        vm.duration = vm.durations[0];
+        vm.duration = null;
         vm.airlines = [];
         vm.airlines.push("All");
-        vm.airline = vm.airlines[0];
+        vm.airline = null;
 
 
         vm.timings = [
@@ -52,8 +52,8 @@ angular.module('MainCtrl', [])
             {title: "9:00 PM to 11:59 PM", min: "9:00 PM", max: "11:59 PM"},
 
         ];
-        vm.departure = vm.timings[0];
-        vm.arrival = vm.timings[0];
+        vm.departure = null;
+        vm.arrival = null;
 
         if (allFlights.data.length != 0) {
             console.log(allFlights);
@@ -122,6 +122,9 @@ angular.module('MainCtrl', [])
                     ceil: maxPrice
                 }
             };
+            console.log("Slider");
+            console.log(vm.slider);
+
         }
 
 
