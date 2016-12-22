@@ -1,5 +1,4 @@
-
-angular.module('appRoutes', ['ui.router']).config(['$stateProvider', '$routeProvider', '$locationProvider','$httpProvider', function ($stateProvider, $routeProvider, $locationProvider,$httpProvider) {
+angular.module('appRoutes', ['ui.router']).config(['$stateProvider', '$routeProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $routeProvider, $locationProvider, $httpProvider) {
 
     $stateProvider
         .state('patientInfo', {
@@ -7,13 +6,13 @@ angular.module('appRoutes', ['ui.router']).config(['$stateProvider', '$routeProv
             controller: 'PatientController as vm',
             templateUrl: 'views/patientInfo.html'
         })
-        .state('patients', {
-            url:'/allPatients',
-            controller:"AllPatients as vm",
-            templateUrl:'views/allPatients.html',
-            resolve:{
-                allUsers:function ($http) {
-                   return $http.get('/allUsers');
+        .state('allFlights', {
+            url: '/allFlights',
+            controller: "AllFlights as vm",
+            templateUrl: 'views/allFlights.html',
+            resolve: {
+                allFlights: function ($http) {
+                    return $http.get('/allFlights');
                 }
             }
         });

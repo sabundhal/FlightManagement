@@ -1,0 +1,215 @@
+<link rel="stylesheet" type="text/css" href="../libs/angularjs-slider/dist/rzslider.css"/>
+<link rel="stylesheet" type="text/css" href="../css/flights.css"/>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <rzslider rz-slider-model="vm.slider.min"
+                  rz-slider-high="vm.slider.max"
+                  rz-slider-options="vm.slider.options"></rzslider>
+
+        <div class="col-xs-3">
+            <div>
+                <h5 style="text-align: center">Duration:</h5>
+            </div>
+            <div>
+                <select ng-model="vm.duration" class="btn btn-primary col-xs-12">
+                    <option ng-repeat="x in vm.durations" value="{{x}}">{{x.title}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div>
+                <h5 style="text-align: center">Airline:</h5>
+            </div>
+            <div>
+                <select ng-model="vm.airline" class="btn btn-primary col-xs-12">
+                    <option ng-repeat="x in vm.airlines" value="{{x}}">{{x}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div>
+                <h5 style="text-align: center">Departure:</h5>
+            </div>
+            <div>
+                <select ng-model="vm.departure" class="btn btn-primary col-xs-12">
+                    <option ng-repeat="x in vm.timings" value="{{x}}">{{x.title}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div>
+                <h5 style="text-align: center">Arrival:</h5>
+            </div>
+            <div>
+                <select ng-model="vm.arrival" class="btn btn-primary col-xs-12">
+                    <option ng-repeat="x in vm.timings" value="{{x}}">{{x.title}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive" id="bigScreen">
+        <table class="table table-hover table-striped" style="margin: 20px">
+            <tr>
+
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'Airline'; vm.sortReverse = !vm.sortReverse">
+                        Airline
+                        <span ng-show="vm.sortType == 'Airline' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'Airline' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+
+
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'DepartureSort'; vm.sortReverse = !vm.sortReverse">
+                        Departure
+                        <span ng-show="vm.sortType == 'DepartureSort' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'DepartureSort' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+
+                <th style="text-align: center ">
+                    <a href="#" ng-click="vm.sortType = 'durationMins'; vm.sortReverse = !vm.sortReverse">
+                        Duration
+
+                        <span ng-show="vm.sortType == 'durationMins' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'durationMins' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'ArrivalSort'; vm.sortReverse = !vm.sortReverse">
+                        Arrival
+                        <span ng-show="vm.sortType == 'ArrivalSort' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'ArrivalSort' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'Price'; vm.sortReverse = !vm.sortReverse">
+                        Price
+                        <span ng-show="vm.sortType == 'Price' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'Price' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'seats'; vm.sortReverse = !vm.sortReverse">
+                        No. of Seats
+                        <span ng-show="vm.sortType == 'seats' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'seats' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+            </tr>
+            <tbody>
+            <tr data-ng-repeat="flight in vm.allFlights
+            | priceFilter:vm.slider
+            | durationFilter:vm.duration
+            | airlineFilter:vm.airline
+            | departureFilter:vm.departure
+            | arrivalFilter:vm.arrival
+            | orderBy:vm.sortType :vm.sortReverse">
+
+                <td style="text-align: center">
+                    <div>
+                        <img src={{flight.imgUrl}} style="height: 20px;
+    width: 80px;">
+                    </div>
+                    <div style="font-size: smaller;">{{flight.Airline}}</div>
+                </td>
+                <td style="text-align: center;padding-top: 15px;">{{flight.Departure}}</td>
+                <td style="text-align: center;padding-top: 5px;">{{flight.Duration}}
+                    <div>
+                        <img src="../images/arrow.png" style="height: 50px;
+    width: 150px;
+    margin-top: -25px;">
+                    </div>
+                </td>
+                <td style="text-align: center;padding-top: 15px;">{{flight.Arrival}}</td>
+                <td style="text-align: center;padding-top: 15px;font-size: x-large"><strong >{{flight.Price}}</strong></td>
+                <td style="text-align: center;padding-top: 15px;"><strong>{{flight["Seats Available"]}}</strong></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="table-responsive" id="smallScreen" style="margin-top: 10px">
+        <table class="table table-hover table-striped">
+            <tr>
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'DepartureSort'; vm.sortReverse = !vm.sortReverse">
+                        Time
+                        <span ng-show="vm.sortType == 'DepartureSort' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'DepartureSort' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'durationMins'; vm.sortReverse = !vm.sortReverse">
+                        Duration
+                        <span ng-show="vm.sortType == 'durationMins' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'durationMins' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+
+                <th style="text-align: center">
+                    <a href="#" ng-click="vm.sortType = 'Price'; vm.sortReverse = !vm.sortReverse">
+                        Price
+                        <span ng-show="vm.sortType == 'Price' && !vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-down"></span>
+                        <span ng-show="vm.sortType == 'Price' && vm.sortReverse"
+                              class="glyphicon glyphicon-chevron-up"></span>
+                    </a>
+                </th>
+            </tr>
+            <tbody>
+            <tr data-ng-repeat="flight in vm.allFlights
+            | priceFilter:vm.slider
+            | durationFilter:vm.duration
+            | airlineFilter:vm.airline
+            | departureFilter:vm.departure
+            | arrivalFilter:vm.arrival
+            | orderBy:vm.sortType :vm.sortReverse">
+                <td style="text-align: center">
+                    <div>
+                        <img src={{flight.imgUrl}} style="height: 30px;
+    width: 80px;">
+                    </div>
+                    <div style="    font-size: small;">
+                        {{flight.Airline}}
+                    </div>
+                </td>
+                <td style="text-align: center ;   padding-top: 20px;">
+                    <div>
+                        <strong> {{flight.Departure}} - {{flight.Arrival}}</strong>
+                    </div>
+                    <div style="    font-size: small;">
+                        {{flight.Duration}}
+                    </div>
+                </td>
+                <td style="text-align: center;padding-top: 20px;"><strong>{{flight.Price}}</strong></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
