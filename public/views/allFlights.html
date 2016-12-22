@@ -8,42 +8,42 @@
                   rz-slider-high="vm.slider.max"
                   rz-slider-options="vm.slider.options"></rzslider>
 
-        <div class="col-xs-3">
+        <div class="col-xs-6 col-md-3">
             <div>
                 <h5 style="text-align: center">Duration:</h5>
             </div>
-            <div>
-                <select ng-model="vm.duration" class="btn btn-primary col-xs-12">
+            <div style="text-align: center;">
+                <select ng-model="vm.duration" class="btn btn-primary col-sm-12">
                     <option ng-repeat="x in vm.durations" value={{x}}>{{x.title}}</option>
                 </select>
             </div>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-6 col-md-3">
             <div>
                 <h5 style="text-align: center">Airline:</h5>
             </div>
-            <div>
-                <select ng-model="vm.airline" class="btn btn-primary col-xs-12">
+            <div style="text-align: center;">
+                <select ng-model="vm.airline" class="btn btn-primary col-sm-12">
                     <option ng-repeat="x in vm.airlines" value="{{x}}">{{x}}</option>
                 </select>
             </div>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-6 col-md-3">
             <div>
                 <h5 style="text-align: center">Departure:</h5>
             </div>
-            <div>
-                <select ng-model="vm.departure" class="btn btn-primary col-xs-12">
+            <div style="text-align: center;">
+                <select id="depWidth" ng-model="vm.departure" class="btn btn-primary col-sm-12">
                     <option ng-repeat="x in vm.timings" value={{x}}>{{x.title}}</option>
                 </select>
             </div>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-6 col-md-3">
             <div>
                 <h5 style="text-align: center">Arrival:</h5>
             </div>
-            <div>
-                <select ng-model="vm.arrival" class="btn btn-primary col-xs-12">
+            <div style="text-align: center;">
+                <select id="arrWidth" ng-model="vm.arrival" class="btn btn-primary col-sm-12">
                     <option ng-repeat="x in vm.timings" value={{x}}>{{x.title}}</option>
                 </select>
             </div>

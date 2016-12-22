@@ -2,9 +2,13 @@
 #bigScreen{
     display: none;
 }
+    #depWidth,#arrWidth{
+        width: 150px;
+    }
 }
 @media screen and (min-width: 768px) {
 #smallScreen{
     display: none;
 }
+
 }
