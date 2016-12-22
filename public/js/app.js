@@ -1,49 +1,32 @@
 // public/js/app.js
-angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'rzModule'])
-    .directive('dobasync', function () {
-        return {
-            require: 'ngModel',
-            link: function (scope, elm, attrs, ctrl) {
-                ctrl.$validators.dobasync = function (modelValue, viewValue) {
-                    var birthDate = new Date();
+angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl'])
 
-                    birthDate.setFullYear(viewValue.substring(0, viewValue.indexOf("-")));
-                    birthDate.setMonth(viewValue.substring(viewValue.indexOf("-") + 1, viewValue.lastIndexOf("-")) - 1);
-                    birthDate.setDate(viewValue.substring(viewValue.lastIndexOf("-") + 1, viewValue.length));
-
-                    var currentDate = new Date();
-
-                    if (birthDate >= currentDate) {
-
-                        return false;
-                    }
-                    return true;
-                };
-            }
-        };
-    })
     .filter('priceFilter', function () {
 
         return function (input, slider) {
 
             var output = [];
-            var min = slider.min;
-            var max = slider.max;
-            angular.forEach(input, function (flight) {
-                var price = parseInt(flight.Price);
-                if (price >= min && price <= max)
-                    output.push(flight);
-            });
-            return output;
+            if (slider != null) {
+                var min = slider.min;
+                var max = slider.max;
+                angular.forEach(input, function (flight) {
+                    var price = parseInt(flight.Price);
+                    if (price >= min && price <= max)
+                        output.push(flight);
+                });
+                return output;
+            } else
+                return output;
         }
 
     })
     .filter('durationFilter', function () {
 
         return function (input, duration) {
-            if (duration == null || JSON.parse(duration).title=="All")
+            // console.log(duration);
+            if (duration.min == null)
                 return input;
-            var duration = JSON.parse(duration);
+            // var duration = JSON.parse(duration);
             var min = parseInt(duration.min) * 60;
             var max = parseInt(duration.max) * 60;
             var output = [];
@@ -60,7 +43,7 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'rzModule'])
     .filter('airlineFilter', function () {
 
         return function (input, airline) {
-            if (airline == null || airline=="All")
+            if (airline == null || airline == "All")
                 return input;
             var output = [];
             angular.forEach(input, function (flight) {
@@ -74,12 +57,12 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'rzModule'])
     .filter('departureFilter', function () {
 
         return function (input, departure) {
-            if (departure == null)
+            if (departure.min == null)
                 return input;
 
             var output = [];
 
-            var departure = JSON.parse(departure);
+            // var departure = JSON.parse(departure);
             if (departure.min == null)
                 return input;
 
@@ -103,6 +86,7 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'rzModule'])
 
                 }
             });
+            console.log(output);
             return output;
         }
 
@@ -110,11 +94,11 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'rzModule'])
     .filter('arrivalFilter', function () {
 
         return function (input, arrival) {
-            if (arrival == null)
+            if (arrival.min == null)
                 return input;
 
             var output = [];
-            var arrival = JSON.parse(arrival);
+            // var arrival = JSON.parse(arrival);
             if (arrival.min == null)
                 return input;
             var timeUnit = arrival.min.substring(arrival.min.length - 2, arrival.min.length);
@@ -140,22 +124,4 @@ angular.module('MyApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'rzModule'])
             return output;
         }
 
-    })
-    .filter('searchFilter', function () {
-        return function (input, option) {
-            if (option == null || option.trim() == "") {
-                return input
-            }
-            else {
-                var array = [];
-                option = option.trim();
-                option = option.toLowerCase();
-                for (var i = 0; i < input.length; i++) {
-                    if (input[i].firstName.toLowerCase().indexOf(option) != -1)
-                        array.push(input[i]);
-                }
-                return array;
-            }
-
-        }
     });

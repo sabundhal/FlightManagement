@@ -1,41 +1,43 @@
 // public/js/controllers/MainCtrl.js
-angular.module('MainCtrl', ['ngNotify'])
-    .controller('PatientController', ['$scope', '$http', 'ngNotify',
-        function ($scope, $http, ngNotify) {
-            var vm = this;
-            vm.user = {};
-            vm.gender = ["Male", "Female"];
-            vm.setAge = function () {
-                vm.user.age = new Date().getFullYear() - vm.user.dob.getFullYear();
+angular.module('MainCtrl', [])
+
+    .controller('SearchFlightController', ['$scope', '$http', '$state', function ($scope, $http, $state) {
+        var vm = this;
+        vm.sources = ['Delhi', 'Bangalore', 'Chennai', 'Kolkata'];
+        vm.destinations = ['Delhi', 'Bangalore', 'Chennai', 'Kolkata'];
+        vm.seats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+        vm.seat = '2';
+        vm.source = 'Bangalore';
+        vm.destination = 'Kolkata';
+
+        vm.submitForm = function () {
+            var data = {
+                source: vm.source,
+                destination: vm.destination,
+                seat: vm.seat
             };
-
-            vm.submitForm = function () {
-
-                $http.post('/registerUser', {'data': vm.user}).then(function (response) {
-                        ngNotify.set(response.data);
-                    },
-                    function (err) { // optional
-                        console.log("Error");// failed
-                    }
-                );
-
-            };
-        }])
+            console.log("Data:");
+            console.log(data);
+            $state.go('allFlights', {data: data});
+        };
+    }])
     .controller('AllFlights', ['$scope', 'allFlights', '$filter', function ($scope, allFlights, $filter) {
         var vm = this;
+        vm.allFlights = [];
         vm.sortType = "Price";
         vm.sortReverse = false;
+        vm.slider = null;
         var minPrice = 0, maxPrice = 0;
         vm.durations = [
-            {title: "All"},
+            {title: "All",min:null,max:null},
             {title: "< 2hrs", min: "0", max: "2"},
             {title: " 2hrs to <3 Hours", min: "2", max: "3"},
             {title: ">= 3 hrs", min: "3", max: "6"}
         ];
-        vm.duration = null;
+        vm.duration = vm.durations[0];
         vm.airlines = [];
         vm.airlines.push("All");
-        vm.airline = null;
+        vm.airline = vm.airlines[0];
 
 
         vm.timings = [
@@ -50,73 +52,78 @@ angular.module('MainCtrl', ['ngNotify'])
             {title: "9:00 PM to 11:59 PM", min: "9:00 PM", max: "11:59 PM"},
 
         ];
-        vm.departure = null;
-        vm.arrival = null;
+        vm.departure = vm.timings[0];
+        vm.arrival = vm.timings[0];
 
-        vm.allFlights = allFlights.data;
-        vm.filterFlights = vm.allFlights;
+        if (allFlights.data.length != 0) {
+            console.log(allFlights);
+            vm.allFlights = allFlights.data;
+            vm.filterFlights = vm.allFlights;
+            minPrice = parseInt(vm.allFlights[0].Price);
+        }
 
-        minPrice = parseInt(vm.allFlights[0].Price);
+        if (vm.allFlights.length != 0) {
+            angular.forEach(vm.allFlights, function (flight) {
+                var price = parseInt(flight.Price);
 
-        angular.forEach(vm.allFlights, function (flight) {
-            var price = parseInt(flight.Price);
+                var durationAray = flight.Duration.split(" ");
 
-            var durationAray = flight.Duration.split(" ");
+                if (durationAray.length == 2)
+                    var durationMins = parseInt(durationAray[0]) * 60;
+                else
+                    var durationMins = parseInt(durationAray[0]) * 60 + parseInt(durationAray[2]);
 
-            if (durationAray.length == 2)
-                var durationMins = parseInt(durationAray[0]) * 60;
-            else
-                var durationMins = parseInt(durationAray[0]) * 60 + parseInt(durationAray[2]);
+                flight.durationMins = durationMins;
+                if (price > maxPrice)
+                    maxPrice = price;
+                if (price < minPrice)
+                    minPrice = price;
 
-            flight.durationMins = durationMins;
-            if (price > maxPrice)
-                maxPrice = price;
-            if (price < minPrice)
-                minPrice = price;
+                if (vm.airlines.indexOf(flight.Airline) == -1)
+                    vm.airlines.push(flight.Airline);
 
-            if (vm.airlines.indexOf(flight.Airline) == -1)
-                vm.airlines.push(flight.Airline);
+                //departure
+                var departure = flight.Departure;
+                var timeUnit = departure.substr(departure.length - 2);
+                var minsArray = departure.substring(0, departure.indexOf(" ")).split(":");
+                if (parseInt(minsArray[0]) == 12)
+                    var mins = parseInt(minsArray[1]);
+                else
+                    var mins = parseInt(minsArray[0]) * 60 + parseInt(minsArray[1]);
 
-            //departure
-            var departure = flight.Departure;
-            var timeUnit = departure.substr(departure.length - 2);
-            var minsArray = departure.substring(0, departure.indexOf(" ")).split(":");
-            if (parseInt(minsArray[0]) == 12)
-                var mins = parseInt(minsArray[1]);
-            else
-                var mins = parseInt(minsArray[0]) * 60 + parseInt(minsArray[1]);
+                flight.DepartureSort = mins;
+                if (timeUnit == "PM")
+                    flight.DepartureSort += 12 * 60;
 
-            flight.DepartureSort = mins;
-            if (timeUnit == "PM")
-                flight.DepartureSort += 12 * 60;
+                //arrival
+                var arrival = flight.Arrival;
+                var timeUnit = arrival.substr(arrival.length - 2);
+                var minsArray = arrival.substring(0, arrival.indexOf(" ")).split(":");
+                if (parseInt(minsArray[0]) == 12)
+                    var mins = parseInt(minsArray[1]);
+                else
+                    var mins = parseInt(minsArray[0]) * 60 + parseInt(minsArray[1]);
+                flight.ArrivalSort = mins;
+                if (timeUnit == "PM")
+                    flight.ArrivalSort += 12 * 60;
 
-            //arrival
-            var arrival = flight.Arrival;
-            var timeUnit = arrival.substr(arrival.length - 2);
-            var minsArray = arrival.substring(0, arrival.indexOf(" ")).split(":");
-            if (parseInt(minsArray[0]) == 12)
-                var mins = parseInt(minsArray[1]);
-            else
-                var mins = parseInt(minsArray[0]) * 60 + parseInt(minsArray[1]);
-            flight.ArrivalSort = mins;
-            if (timeUnit == "PM")
-                flight.ArrivalSort += 12 * 60;
+                flight.seats = parseInt(flight["Seats Available"]);
+                flight.imgUrl = "images/" + flight.Airline + ".png";
 
-            flight.seats = parseInt(flight["Seats Available"]);
-            flight.imgUrl = "images/" + flight.Airline + ".png";
+            });
+            console.log("All flights");
+            console.log(vm.allFlights);
 
-        });
-        console.log("All flights");
-        console.log(vm.allFlights);
+            vm.slider = {
+                min: minPrice,
+                max: maxPrice,
+                options: {
+                    floor: minPrice,
+                    ceil: maxPrice
+                }
+            };
+        }
 
-        vm.slider = {
-            min: minPrice,
-            max: maxPrice,
-            options: {
-                floor: minPrice,
-                ceil: maxPrice
-            }
-        };
 
         // $scope.$on("slideEnded", function () {
         //     vm.filterFlights = $filter('priceFilter')(vm.allFlights, vm.slider.min, vm.slider.max);

@@ -14,7 +14,7 @@
             </div>
             <div>
                 <select ng-model="vm.duration" class="btn btn-primary col-xs-12">
-                    <option ng-repeat="x in vm.durations" value="{{x}}">{{x.title}}</option>
+                    <option ng-repeat="x in vm.durations" value={{x}}>{{x.title}}</option>
                 </select>
             </div>
         </div>
@@ -34,7 +34,7 @@
             </div>
             <div>
                 <select ng-model="vm.departure" class="btn btn-primary col-xs-12">
-                    <option ng-repeat="x in vm.timings" value="{{x}}">{{x.title}}</option>
+                    <option ng-repeat="x in vm.timings" value={{x}}>{{x.title}}</option>
                 </select>
             </div>
         </div>
@@ -44,7 +44,7 @@
             </div>
             <div>
                 <select ng-model="vm.arrival" class="btn btn-primary col-xs-12">
-                    <option ng-repeat="x in vm.timings" value="{{x}}">{{x.title}}</option>
+                    <option ng-repeat="x in vm.timings" value={{x}}>{{x.title}}</option>
                 </select>
             </div>
         </div>
@@ -139,14 +139,14 @@
                     </div>
                 </td>
                 <td style="text-align: center;padding-top: 15px;">{{flight.Arrival}}</td>
-                <td style="text-align: center;padding-top: 15px;font-size: x-large"><strong >{{flight.Price}}</strong></td>
+                <td style="text-align: center;padding-top: 15px;font-size: x-large"><strong>{{flight.Price}}</strong>
+                </td>
                 <td style="text-align: center;padding-top: 15px;"><strong>{{flight["Seats Available"]}}</strong></td>
 
             </tr>
             </tbody>
         </table>
     </div>
-
 
 
     <div class="table-responsive" id="smallScreen" style="margin-top: 10px">
@@ -212,4 +212,7 @@
             </tbody>
         </table>
     </div>
+    <button class="btn btn-primary" ui-sref="searchFlight">
+        Go Back
+    </button>
 </div>

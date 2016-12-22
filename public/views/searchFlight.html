@@ -1,0 +1,74 @@
+<link rel="stylesheet" type="text/css" href="../css/flight.css"/>
+
+<div id="rowDiv" class="row" style="margin-top: 30px;">
+    <form name="userForm" ng-submit="vm.submitForm()" novalidate style="    padding: 10px;
+    border: 1px solid darkgray;    margin-top: 100px;background: #E9EBEE;">
+        <div class="form-group row">
+            <label for="source" class="col-xs-3 col-form-label">Source</label>
+            <div class="col-xs-9">
+                <select ng-model="vm.source" class="btn btn-primary form-control " id="source" required>
+                    <option ng-repeat="x in vm.sources" value="{{x}}">{{x}}</option>
+                </select>
+            </div>
+            <!--<input class="form-control" type="text" placeholder="Enter source..." id="source">-->
+        </div>
+
+        <div class="form-group row">
+            <label for="destination" class="col-xs-3 col-form-label">Destination</label>
+            <div class="col-xs-9">
+                <select ng-model="vm.destination" class="btn btn-primary form-control" id="destination" required>
+                    <option ng-repeat="x in vm.destinations" value="{{x}}">{{x}}</option>
+                </select>
+                <!--<input class="form-control" type="search" placeholder="Destination..." id="destination">-->
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="seat" class="col-xs-2 col-form-label">Seats</label>
+            <div class="col-xs-4">
+                <select ng-model="vm.seat" class="btn btn-primary form-control col-xs-2" id="seat" required>
+                    <option ng-repeat="x in vm.seats" value="{{x}}">{{x}}</option>
+                </select></div>
+        </div>
+        <button type="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">
+            Submit
+        </button>
+    </form>
+</div>
+
+<!--<div id="smallScreenScreen" class="row" style="margin-left: 300px;-->
+<!--margin-top: 30px;-->
+<!--margin-right: 300px;">-->
+<!--<form name="userForm" ng-submit="vm.submitForm()" novalidate style="    padding: 10px;-->
+<!--border: 1px solid darkgray;    margin-top: 100px;background: #E9EBEE;">-->
+<!--<div class="form-group row">-->
+<!--<label for="source" class="col-xs-3 col-form-label">Source</label>-->
+<!--<div class="col-xs-9">-->
+<!--<select ng-model="vm.source" class="btn btn-primary form-control " id="source" required>-->
+<!--<option ng-repeat="x in vm.sources" value="{{x}}">{{x}}</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--&lt;!&ndash;<input class="form-control" type="text" placeholder="Enter source..." id="source">&ndash;&gt;-->
+<!--</div>-->
+
+<!--<div class="form-group row">-->
+<!--<label for="destination" class="col-xs-3 col-form-label">Destination</label>-->
+<!--<div class="col-xs-9">-->
+<!--<select ng-model="vm.destination" class="btn btn-primary form-control" id="destination" required>-->
+<!--<option ng-repeat="x in vm.destinations" value="{{x}}">{{x}}</option>-->
+<!--</select>-->
+<!--&lt;!&ndash;<input class="form-control" type="search" placeholder="Destination..." id="destination">&ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group row">-->
+<!--<label for="seat" class="col-xs-2 col-form-label">Seats</label>-->
+<!--<div class="col-xs-4">-->
+<!--<select ng-model="vm.seat" class="btn btn-primary form-control col-xs-2" id="seat" required>-->
+<!--<option ng-repeat="x in vm.seats" value="{{x}}">{{x}}</option>-->
+<!--</select></div>-->
+<!--</div>-->
+<!--<button type="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">-->
+<!--Submit-->
+<!--</button>-->
+<!--</form>-->
+<!--</div>-->
+
